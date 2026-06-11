@@ -4,44 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yogesh.auraai.domain.model.UserSettings
+import com.yogesh.auraai.presentation.navigation.AuraNavGraph
 import com.yogesh.auraai.ui.theme.AuraAITheme
 
 class MainActivity : ComponentActivity() {
+
+    private val appContainer by lazy {
+        (application as AuraAIApplication).appContainer
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AuraAITheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            val settings by appContainer.settingsRepository.observeSettings()
+                .collectAsStateWithLifecycle(initialValue = UserSettings())
+
+            AuraAITheme(darkTheme = settings.isDarkTheme) {
+                AuraNavGraph(appContainer = appContainer)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AuraAITheme {
-        Greeting("Android")
     }
 }
