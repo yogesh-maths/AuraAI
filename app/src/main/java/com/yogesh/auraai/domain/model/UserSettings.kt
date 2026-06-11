@@ -8,7 +8,7 @@ data class UserSettings(
     val isOnboardingComplete: Boolean = false,
 ) {
     companion object {
-        const val DEFAULT_MODEL = "gpt-4o-mini"
+        const val DEFAULT_MODEL = "mock"
         const val DEFAULT_SYSTEM_PROMPT = "You are AuraAI, a helpful assistant."
     }
 }
