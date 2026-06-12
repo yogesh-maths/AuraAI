@@ -19,7 +19,9 @@ class MessageRepositoryImpl(
     private val conversationRepository: ConversationRepository,
     private val syncScheduler: SyncScheduler,
 ) : MessageRepository {
-
+    override suspend fun markAsSynced(messageId: String) {
+        messageDao.markAsSynced(messageId)
+    }
     override fun observeMessages(conversationId: String): Flow<List<Message>> {
         return messageDao.observeMessages(conversationId).map { entities ->
             entities.map { it.toDomain() }

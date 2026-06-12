@@ -14,11 +14,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.yogesh.auraai.data.remote.GeminiService
+import com.yogesh.auraai.domain.model.MessageRole
 
 class ChatViewModel(
     private val conversationId: String,
     private val conversationRepository: ConversationRepository,
     private val messageRepository: MessageRepository,
+    private val geminiService: GeminiService,
     networkMonitor: NetworkMonitor,
 ) : ViewModel() {
 
@@ -58,7 +61,48 @@ class ChatViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isSending = true, inputText = "", error = null) }
             try {
-                messageRepository.sendUserMessage(conversationId, content)
+                val messageId =
+                    messageRepository.sendUserMessage(
+                        conversationId,
+                        content
+                    )
+                val historyMessages =
+                    messages.value.takeLast(20)
+
+                val history =
+                    historyMessages.joinToString("\n") { message ->
+
+                        val role =
+                            if (message.role == MessageRole.USER)
+                                "User"
+                            else
+                                "Assistant"
+
+                        "$role: ${message.content}"
+                    }
+
+                val fullPrompt = """
+You are AuraAI.
+
+You were created by Yogesh Kumbhar.
+
+Be helpful, friendly, and concise.
+
+Conversation History:
+$history
+
+User: $content
+""".trimIndent()
+                val response =
+                    geminiService.ask(fullPrompt)
+
+                messageRepository.markAsSynced(messageId)
+
+                messageRepository.insertAssistantMessage(
+                    conversationId = conversationId,
+                    content = response,
+                    remoteId = null
+                )
                 val conversation = conversationRepository.getConversation(conversationId)
                 if (conversation != null) {
                     _uiState.update { it.copy(title = conversation.title) }

@@ -111,4 +111,13 @@ interface MessageDao {
 
     @Query("SELECT COUNT(*) FROM messages WHERE conversationId = :conversationId AND role = 'USER'")
     suspend fun countUserMessages(conversationId: String): Int
+
+    @Query(
+        """
+    UPDATE messages
+    SET syncStatus = 'SYNCED'
+    WHERE id = :id
+    """
+    )
+    suspend fun markAsSynced(id: String)
 }

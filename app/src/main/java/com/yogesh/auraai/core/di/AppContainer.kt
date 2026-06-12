@@ -32,7 +32,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-
+import com.yogesh.auraai.data.remote.GeminiService
 class AppContainer(context: Context) {
 
     private val applicationContext = context.applicationContext
@@ -74,7 +74,7 @@ class AppContainer(context: Context) {
         .build()
 
     val aiApiService: AiApiService = retrofit.create(AiApiService::class.java)
-
+    val geminiService = GeminiService()
     val conversationRepository: ConversationRepository = ConversationRepositoryImpl(
         conversationDao = database.conversationDao(),
     )
@@ -145,6 +145,7 @@ class ChatViewModelFactory(
                 conversationId = conversationId,
                 conversationRepository = container.conversationRepository,
                 messageRepository = container.messageRepository,
+                geminiService = container.geminiService,
                 networkMonitor = container.networkMonitor,
             ) as T
         }

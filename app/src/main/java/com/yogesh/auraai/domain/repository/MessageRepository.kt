@@ -14,4 +14,5 @@ interface MessageRepository {
     suspend fun retryFailedMessage(messageId: String)
     suspend fun deleteMessage(id: String)
     suspend fun getMessage(id: String): Message?
+    suspend fun markAsSynced(messageId: String)
 }
