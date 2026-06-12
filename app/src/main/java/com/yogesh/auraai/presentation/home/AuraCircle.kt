@@ -7,6 +7,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ enum class AuraState {
 }
 @Composable
 fun AuraLogo(
+    modifier: Modifier = Modifier,
     state: AuraState = AuraState.Idle
 ) {
 
@@ -83,7 +85,7 @@ fun AuraLogo(
 
         Canvas(
             modifier = Modifier
-                .size(300.dp)
+                .size(260.dp)
                 .graphicsLayer {
                     scaleX = pulse
                     scaleY = pulse

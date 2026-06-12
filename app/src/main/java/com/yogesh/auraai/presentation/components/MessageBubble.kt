@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.yogesh.auraai.domain.model.Message
 import com.yogesh.auraai.domain.model.MessageRole
 import com.yogesh.auraai.domain.model.SyncStatus
+import androidx.compose.ui.graphics.Color
+import com.yogesh.auraai.presentation.home.AuraLogo
 
 @Composable
 fun MessageBubble(
@@ -33,13 +36,13 @@ fun MessageBubble(
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(24.dp))
                 .background(
                     if (isUser) {
-                        MaterialTheme.colorScheme.primaryContainer
+                        Color(0xFF8B5CF6)
                     } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
+                        Color(0xFF111827)
+                    }
                 )
                 .then(
                     if (message.syncStatus == SyncStatus.FAILED && isUser) {
@@ -51,11 +54,24 @@ fun MessageBubble(
                 .padding(12.dp),
             horizontalAlignment = if (isUser) Alignment.End else Alignment.Start,
         ) {
+            if (!isUser) {
+                Text(
+                    text = "Aura",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color(0xFF22D3EE),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+            }
+            if (!isUser) {
+                AuraLogo(
+                    modifier = Modifier.size(28.dp)
+                )
+            }
             Text(
                 text = message.content,
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (isUser) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
+                    Color(0xFF8B5CF6)
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
