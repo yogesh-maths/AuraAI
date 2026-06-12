@@ -19,13 +19,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            val settings by appContainer.settingsRepository.observeSettings()
-                .collectAsStateWithLifecycle(initialValue = UserSettings())
 
-            AuraAITheme(darkTheme = settings.isDarkTheme) {
-                AuraNavGraph(appContainer = appContainer)
+        setContent {
+
+            val settings by appContainer.settingsRepository
+                .observeSettings()
+                .collectAsStateWithLifecycle(
+                    initialValue = UserSettings()
+                )
+
+            AuraAITheme(
+                darkTheme = true
+            ) {
+
+                AuraNavGraph(
+                    appContainer = appContainer
+                )
+
             }
         }
     }
-}
+    }
+

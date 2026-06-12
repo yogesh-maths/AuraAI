@@ -1,5 +1,6 @@
 package com.yogesh.auraai.presentation.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +30,9 @@ import com.yogesh.auraai.core.di.AppContainer
 import com.yogesh.auraai.domain.model.UserSettings
 import com.yogesh.auraai.presentation.chat.ChatScreen
 import com.yogesh.auraai.presentation.conversations.ConversationListScreen
-import com.yogesh.auraai.presentation.home.AuraCircle
+
+import com.yogesh.auraai.presentation.home.AuraLogo
+import com.yogesh.auraai.presentation.home.AuraState
 import com.yogesh.auraai.presentation.onboarding.OnboardingScreen
 import com.yogesh.auraai.presentation.settings.SettingsScreen
 import kotlinx.coroutines.delay
@@ -128,20 +131,26 @@ private fun SplashScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF050816)),
+        contentAlignment = Alignment.Center
     ) {
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            AuraCircle()
-
-            Spacer(Modifier.height(24.dp))
+            AuraLogo(
+                state = AuraState.Idle
+            )
+            Spacer(
+                modifier = Modifier.height(32.dp)
+            )
 
             Text(
                 text = "AuraAI",
-                fontSize = 48.sp,
+                fontSize = 56.sp,
                 fontWeight = FontWeight.Bold,
                 style = androidx.compose.ui.text.TextStyle(
                     brush = Brush.linearGradient(
@@ -152,6 +161,11 @@ private fun SplashScreen(
                         )
                     )
                 )
+            )
+            Text(
+                text = "Your Intelligent Companion",
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 14.sp
             )
         }
     }
