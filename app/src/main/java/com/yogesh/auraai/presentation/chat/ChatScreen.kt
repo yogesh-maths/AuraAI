@@ -1,5 +1,6 @@
 package com.yogesh.auraai.presentation.chat
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,12 +34,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yogesh.auraai.core.di.AppContainer
 import com.yogesh.auraai.core.di.ChatViewModelFactory
+import com.yogesh.auraai.data.remote.GeminiService
 import com.yogesh.auraai.presentation.components.EmptyState
 import com.yogesh.auraai.presentation.components.MessageBubble
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
+
     conversationId: String,
     appContainer: AppContainer,
     onNavigateBack: () -> Unit,
@@ -156,4 +159,5 @@ fun ChatScreen(
             }
         }
     }
+
 }
