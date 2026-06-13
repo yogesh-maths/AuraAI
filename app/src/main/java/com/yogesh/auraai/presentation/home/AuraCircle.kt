@@ -104,7 +104,10 @@ fun AuraLogo(
                 color = Color(0xFF22D3EE).copy(alpha = 0.08f),
                 radius = radius + 75f
             )
-
+            drawCircle(
+                color = Color(0xFF8B5CF6).copy(alpha = 0.08f),
+                radius = 220f
+            )
             // Rotating comet ring
             rotate(rotation) {
 

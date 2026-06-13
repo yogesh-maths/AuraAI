@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,6 +47,19 @@ import com.yogesh.auraai.core.di.AppContainer
 import com.yogesh.auraai.core.di.ChatViewModelFactory
 import com.yogesh.auraai.presentation.components.MessageBubble
 import com.yogesh.auraai.presentation.home.AuraLogo
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.font.FontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -136,16 +150,26 @@ fun ChatScreen(
 
                     Spacer(Modifier.height(32.dp))
 
-                    Text(
-                        text = "Good Evening, Yogesh",
-                        style = MaterialTheme.typography.headlineMedium
-                    )
+                    Row {
+                        Text(
+                            text = "Good Evening, ",
+                            style = MaterialTheme.typography.headlineMedium
+                        )
 
-                    Text(
-                        text = "How can I help you today?",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Gray
-                    )
+                        Text(
+                            text = "Yogesh",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = TextStyle(
+                                brush = Brush.horizontalGradient(
+                                    listOf(
+                                        Color(0xFF8B5CF6),
+                                        Color(0xFF22D3EE)
+                                    )
+                                )
+                            )
+                        )
+                    }
                 }
             } else {
                 LazyColumn(
@@ -173,14 +197,88 @@ fun ChatScreen(
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TextField(
-                    value = uiState.inputText,
-                    onValueChange = viewModel::onInputChanged,
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text("Message AuraAI…") },
-                    enabled = !uiState.isSending,
-                    maxLines = 4,
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(64.dp)
+                            .clip(RoundedCornerShape(32.dp))
+                            .background(
+                                Color(0xFF101A38).copy(alpha = 0.85f)
+                            )
+                            .border(
+                                width = 1.dp,
+                                brush = Brush.horizontalGradient(
+                                    listOf(
+                                        Color(0xFF8B5CF6),
+                                        Color(0xFF22D3EE)
+                                    )
+                                ),
+                                shape = RoundedCornerShape(32.dp)
+                            )
+                    ) {
+
+                        TextField(
+                            value = uiState.inputText,
+                            onValueChange = viewModel::onInputChanged,
+                            modifier = Modifier.fillMaxSize(),
+                            placeholder = {
+                                Text(
+                                    "Message AuraAI...",
+                                    color = Color.Gray
+                                )
+                            },
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+                            singleLine = true
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(56.dp)
+                            .clip(CircleShape)
+                            .shadow(
+                                elevation = 16.dp,
+                                shape = CircleShape
+                            )
+                            .background(
+                                brush = Brush.linearGradient(
+                                    listOf(
+                                        Color(0xFF8B5CF6),
+                                        Color(0xFF22D3EE)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        IconButton(
+                            onClick = viewModel::sendMessage,
+                            enabled = uiState.inputText.isNotBlank()
+
+                        ) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.Send,
+                                contentDescription = null,
+                                tint = Color.White
+
+                            )
+                        }
+                    }
+                }
                 IconButton(
                     onClick = viewModel::sendMessage,
                     enabled = uiState.inputText.isNotBlank() && !uiState.isSending,

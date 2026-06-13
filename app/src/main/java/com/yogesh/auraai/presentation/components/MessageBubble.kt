@@ -20,6 +20,7 @@ import com.yogesh.auraai.domain.model.Message
 import com.yogesh.auraai.domain.model.MessageRole
 import com.yogesh.auraai.domain.model.SyncStatus
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import com.yogesh.auraai.presentation.home.AuraLogo
 
 @Composable
@@ -39,9 +40,9 @@ fun MessageBubble(
                 .clip(RoundedCornerShape(24.dp))
                 .background(
                     if (isUser) {
-                        Color(0xFF8B5CF6)
+                        Color(0xFF5049F5) // Purple
                     } else {
-                        Color(0xFF111827)
+                        Color(0xFF101827)
                     }
                 )
                 .then(
@@ -58,20 +59,21 @@ fun MessageBubble(
                 Text(
                     text = "Aura",
                     style = MaterialTheme.typography.labelSmall,
-                    color = Color(0xFF22D3EE),
+                    fontSize = 10.sp,
+                            color = Color(0xFF22D3EE),
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
             if (!isUser) {
-                AuraLogo(
-                    modifier = Modifier.size(28.dp)
-                )
+//                AuraLogo(
+//                    modifier = Modifier.size(8.dp)
+//                )
             }
             Text(
                 text = message.content,
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (isUser) {
-                    Color(0xFF8B5CF6)
+                    Color(0xFFF8FAFC)
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
