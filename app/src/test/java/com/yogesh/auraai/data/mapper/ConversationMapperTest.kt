@@ -21,7 +21,7 @@ class ConversationMapperTest {
         val withPreview = ConversationWithPreview(
             conversation = entity,
             messageCount = 3,
-            lastMessagePreview = "Hello",
+            lastMessagePreview = "Hi",
         )
 
         val domain = withPreview.toDomain()
