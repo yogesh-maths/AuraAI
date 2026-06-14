@@ -1,6 +1,7 @@
 package com.yogesh.auraai.presentation.chat
 
 import com.yogesh.auraai.core.network.NetworkMonitor
+import com.yogesh.auraai.data.remote.GeminiService
 import com.yogesh.auraai.domain.model.Message
 import com.yogesh.auraai.domain.model.MessageRole
 import com.yogesh.auraai.domain.model.SyncStatus
@@ -26,7 +27,7 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChatViewModelTest {
-
+    private lateinit var geminiService: GeminiService
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var conversationRepository: ConversationRepository
     private lateinit var messageRepository: MessageRepository
@@ -38,8 +39,12 @@ class ChatViewModelTest {
         conversationRepository = mockk(relaxed = true)
         messageRepository = mockk(relaxed = true)
         networkMonitor = mockk(relaxed = true)
+        geminiService = mockk()
         every { networkMonitor.isOnline } returns MutableStateFlow(true)
         every { messageRepository.observeMessages("conv-1") } returns flowOf(emptyList())
+        coEvery {
+            geminiService.ask(any())
+        } returns "Test response"
     }
 
     @After
@@ -55,6 +60,7 @@ class ChatViewModelTest {
             conversationId = "conv-1",
             conversationRepository = conversationRepository,
             messageRepository = messageRepository,
+            geminiService = geminiService,
             networkMonitor = networkMonitor,
         )
 
@@ -74,6 +80,7 @@ class ChatViewModelTest {
             conversationId = "conv-1",
             conversationRepository = conversationRepository,
             messageRepository = messageRepository,
+            geminiService = geminiService,
             networkMonitor = networkMonitor,
         )
 
