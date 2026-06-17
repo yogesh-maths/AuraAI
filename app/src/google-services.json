@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "217258204607",
+    "project_id": "aura-ai-ef7db",
+    "storage_bucket": "aura-ai-ef7db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217258204607:android:6b63017fd8eb5f1255150a",
+        "android_client_info": {
+          "package_name": "com.yogesh.auraai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5k6Vs6mnm7cpy9iB0I5BaLb86m8LZlzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
