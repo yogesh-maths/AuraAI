@@ -1,5 +1,6 @@
 package com.yogesh.auraai.presentation.onboarding
 
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,11 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+
+
 import com.yogesh.auraai.core.di.AppContainer
 
 @Composable
@@ -26,6 +30,7 @@ fun OnboardingScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+
     Scaffold { padding ->
         Column(
             modifier = Modifier
@@ -33,6 +38,7 @@ fun OnboardingScreen(
                 .padding(padding)
                 .padding(24.dp),
         ) {
+
             when (uiState.currentStep) {
 
                 1 -> {
@@ -77,19 +83,18 @@ fun OnboardingScreen(
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text("Age") }
                     )
-
                     TextField(
-                        value = uiState.phone,
-                        onValueChange = viewModel::updatePhone,
+                        value = uiState.email,
+                        onValueChange = viewModel::updateEmail,
                         modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Phone Number") }
+                        label = { Text("Email") }
                     )
 
                     TextField(
-                        value = uiState.otp,
-                        onValueChange = viewModel::updateOtp,
+                        value = uiState.password,
+                        onValueChange = viewModel::updatePassword,
                         modifier = Modifier.fillMaxWidth(),
-                        label = { Text("OTP") }
+                        label = { Text("Password") }
                     )
 
                     uiState.error?.let {
@@ -105,8 +110,16 @@ fun OnboardingScreen(
                     ) {
                         Text("Continue")
                     }
-                }
 
+                    Button(
+                        onClick = {
+                            viewModel.verifyEmailAndContinue()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("I Verified My Email")
+                    }
+                }
                 3 -> {
 
                     Text(
@@ -168,8 +181,12 @@ fun OnboardingScreen(
                         Text("Back")
                     }
 
+                        }
+                    }
+
                 }
+
             }
         }
-    }
-}
+
+

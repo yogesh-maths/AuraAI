@@ -38,6 +38,7 @@ import com.yogesh.auraai.presentation.onboarding.OnboardingScreen
 import com.yogesh.auraai.presentation.settings.SettingsScreen
 import kotlinx.coroutines.delay
 import java.time.format.TextStyle
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AuraNavGraph(
@@ -121,8 +122,13 @@ private fun SplashScreen(
     LaunchedEffect(isOnboardingComplete) {
         delay(1500)
 
+        val user = FirebaseAuth.getInstance().currentUser
+
         val destination =
-            if (isOnboardingComplete) {
+            if (
+                user != null &&
+                user.isEmailVerified
+            ) {
                 Routes.CONVERSATIONS
             } else {
                 Routes.ONBOARDING

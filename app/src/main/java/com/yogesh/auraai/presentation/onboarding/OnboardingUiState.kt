@@ -5,11 +5,12 @@ data class OnboardingUiState(
 
     val name: String = "",
     val age: String = "",
-    val phone: String = "",
-    val otp: String = "",
+    val email: String = "",
+    val password: String = "",
 
     val selectedTraits: List<String> = emptyList(),
 
     val isLoading: Boolean = false,
     val error: String? = null,
+    val isEmailVerified: Boolean = false
 )

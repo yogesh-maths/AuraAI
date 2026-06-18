@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.yogesh.auraai.core.di.AppContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -185,6 +186,20 @@ fun SettingsScreen(
                     .padding(top = 8.dp),
             ) {
                 Text("Clear all data")
+            }
+            OutlinedButton(
+                onClick = {
+
+                    FirebaseAuth.getInstance().signOut()
+
+                    onNavigateToOnboarding()
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            ) {
+                Text("Logout")
             }
         }
     }

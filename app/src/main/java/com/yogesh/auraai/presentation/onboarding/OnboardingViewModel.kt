@@ -2,6 +2,7 @@ package com.yogesh.auraai.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.yogesh.auraai.core.common.Result
 import com.yogesh.auraai.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ class OnboardingViewModel(
 
     private val _uiState = MutableStateFlow(OnboardingUiState())
     val uiState = _uiState.asStateFlow()
+    private val auth = FirebaseAuth.getInstance()
 
 
     fun updateName(name: String) {
@@ -31,17 +33,17 @@ class OnboardingViewModel(
         }
     }
 
-    fun updatePhone(phone: String) {
-        _uiState.update {
-            it.copy(phone = phone, error = null)
-        }
-    }
+//    fun updatePhone(phone: String) {
+//        _uiState.update {
+//            it.copy(phone = phone, error = null)
+//        }
+//    }
 
-    fun updateOtp(otp: String) {
-        _uiState.update {
-            it.copy(otp = otp, error = null)
-        }
-    }
+//    fun updateOtp(otp: String) {
+//        _uiState.update {
+//            it.copy(otp = otp, error = null)
+//        }
+//    }
 
     fun toggleTrait(trait: String) {
 
@@ -79,23 +81,42 @@ class OnboardingViewModel(
                 val state = _uiState.value
 
                 when {
-
                     state.name.isBlank() ->
                         showError("Enter name")
 
                     state.age.isBlank() ->
                         showError("Enter age")
 
-                    state.phone.length != 10 ->
-                        showError("Phone must be 10 digits")
+                    state.email.isBlank() ->
+                        showError("Enter email")
 
-                    state.otp != "1234" ->
-                        showError("Invalid OTP")
+                    state.password.length < 6 ->
+                        showError("Password must be at least 6 characters")
 
-                    else ->
-                        _uiState.update {
-                            it.copy(currentStep = 3)
+                    else -> {
+
+                        auth.createUserWithEmailAndPassword(
+                            state.email,
+                            state.password
+                        ).addOnCompleteListener { task ->
+
+                            if (task.isSuccessful) {
+
+                                auth.currentUser?.sendEmailVerification()
+
+                                showError(
+                                    "Verification email sent. Check your inbox."
+                                )
+
+                            } else {
+
+                                showError(
+                                    task.exception?.message
+                                        ?: "Signup failed"
+                                )
+                            }
                         }
+                    }
                 }
             }
 
@@ -141,5 +162,98 @@ class OnboardingViewModel(
 
         }
     }
+
+    fun updateEmail(email: String) {
+        _uiState.update {
+            it.copy(
+                email = email,
+                error = null
+            )
+        }
     }
+
+    fun updatePassword(password: String) {
+        _uiState.update {
+            it.copy(
+                password = password,
+                error = null
+            )
+        }
+    }
+
+//    fun verifyEmailAndContinue() {
+//
+//        auth.currentUser?.reload()
+//
+//        if (auth.currentUser?.isEmailVerified == true) {
+//
+//            _uiState.update {
+//                it.copy(
+//                    currentStep = 3,
+//                    error = null
+//                )
+//            }
+//
+//        } else {
+//
+//            showError("Please verify your email first")
+//        }
+//
+//    }
+
+    fun login(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit
+    ) {
+
+        auth.signInWithEmailAndPassword(
+            email,
+            password
+        ).addOnCompleteListener { task ->
+
+            if (task.isSuccessful) {
+
+                auth.currentUser?.reload()
+
+                if (auth.currentUser?.isEmailVerified == true) {
+
+                    onSuccess()
+
+                } else {
+
+                    showError("Please verify your email")
+                }
+
+            } else {
+
+                showError(
+                    task.exception?.message
+                        ?: "Login failed"
+                )
+            }
+        }
+    }
+
+    fun verifyEmailAndContinue() {
+
+        auth.currentUser?.reload()?.addOnCompleteListener {
+
+            if (auth.currentUser?.isEmailVerified == true) {
+
+                _uiState.update {
+                    it.copy(
+                        currentStep = 3,
+                        error = null
+                    )
+                }
+
+            } else {
+
+                showError("Please verify your email first")
+            }
+        }
+    }
+}
+
 
