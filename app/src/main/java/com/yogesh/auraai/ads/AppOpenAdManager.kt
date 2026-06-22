@@ -7,7 +7,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
-import com.yogesh.auraai.AuraAIApplication
 
 class AppOpenAdManager(
     private val application: Application
@@ -16,7 +15,6 @@ class AppOpenAdManager(
     private var appOpenAd: AppOpenAd? = null
     private var isLoadingAd = false
     private var isShowingAd = false
-    private var firstLaunchPending = true
 
     init {
         loadAd()
@@ -32,7 +30,7 @@ class AppOpenAdManager(
 
         AppOpenAd.load(
             application,
-            "ca-app-pub-3940256099942544/9257395921", // Test App Open ID
+            "ca-app-pub-3940256099942544/9257395921",
             request,
             object : AppOpenAd.AppOpenAdLoadCallback() {
 
@@ -42,21 +40,6 @@ class AppOpenAdManager(
 
                     appOpenAd = ad
                     isLoadingAd = false
-
-                    // Show once on first launch
-                    if (firstLaunchPending && !isShowingAd) {
-
-                        val activity =
-                            (application as AuraAIApplication)
-                                .getCurrentActivity()
-
-                        if (activity != null) {
-
-                            firstLaunchPending = false
-
-                            showAdIfAvailable(activity)
-                        }
-                    }
                 }
 
                 override fun onAdFailedToLoad(error: LoadAdError) {
@@ -74,7 +57,7 @@ class AppOpenAdManager(
 
     fun showAdIfAvailable(activity: Activity) {
 
-        if (isShowingAd) return
+        if (isShowingAd || isLoadingAd) return
 
         if (appOpenAd == null) {
             loadAd()

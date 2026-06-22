@@ -38,13 +38,13 @@ class AuraAIApplication : Application(),
 
     fun getCurrentActivity(): Activity? = currentActivity
 
-    override fun onStart(owner: LifecycleOwner) {
-        super<DefaultLifecycleObserver>.onStart(owner)
+   override fun onStart(owner: LifecycleOwner) {
+    super<DefaultLifecycleObserver>.onStart(owner)
 
-        currentActivity?.let {
-            appOpenAdManager.showAdIfAvailable(it)
-        }
+    currentActivity?.let {
+        appOpenAdManager.showAdIfAvailable(it)
     }
+}
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 

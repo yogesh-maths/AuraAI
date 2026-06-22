@@ -54,7 +54,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
+import com.yogesh.auraai.AuraAIApplication
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
@@ -77,7 +79,16 @@ fun ChatScreen(
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+
+        val activity = context as Activity
+
+        (activity.application as AuraAIApplication)
+            .appOpenAdManager
+            .showAdIfAvailable(activity)
+    }
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
             listState.animateScrollToItem(messages.lastIndex)
