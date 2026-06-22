@@ -102,11 +102,12 @@ class OnboardingViewModel(
 
                             if (task.isSuccessful) {
 
-                                auth.currentUser?.sendEmailVerification()
-
-                                showError(
-                                    "Verification email sent. Check your inbox."
-                                )
+                                _uiState.update {
+                                    it.copy(
+                                        currentStep = 3,
+                                        error = null
+                                    )
+                                }
 
                             } else {
 
@@ -214,16 +215,7 @@ class OnboardingViewModel(
 
             if (task.isSuccessful) {
 
-                auth.currentUser?.reload()
-
-                if (auth.currentUser?.isEmailVerified == true) {
-
-                    onSuccess()
-
-                } else {
-
-                    showError("Please verify your email")
-                }
+                onSuccess()
 
             } else {
 
@@ -237,23 +229,14 @@ class OnboardingViewModel(
 
     fun verifyEmailAndContinue() {
 
-        auth.currentUser?.reload()?.addOnCompleteListener {
-
-            if (auth.currentUser?.isEmailVerified == true) {
-
-                _uiState.update {
-                    it.copy(
-                        currentStep = 3,
-                        error = null
-                    )
-                }
-
-            } else {
-
-                showError("Please verify your email first")
-            }
+        _uiState.update {
+            it.copy(
+                currentStep = 3,
+                error = null
+            )
         }
     }
+
 }
 
 

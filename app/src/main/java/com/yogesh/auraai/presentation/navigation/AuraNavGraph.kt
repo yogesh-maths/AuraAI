@@ -126,8 +126,8 @@ private fun SplashScreen(
 
         val destination =
             if (
-                user != null &&
-                user.isEmailVerified
+                user != null
+            //    user.isEmailVerified
             ) {
                 Routes.CONVERSATIONS
             } else {

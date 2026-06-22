@@ -39,7 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
+import com.yogesh.auraai.core.ads.BannerAdComposable
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -152,12 +152,12 @@ fun ChatScreen(
 
                     Row {
                         Text(
-                            text = "Good Evening, ",
+                            text = "Hello How can I help You",
                             style = MaterialTheme.typography.headlineMedium
                         )
 
                         Text(
-                            text = "Yogesh",
+                            text = "",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             style = TextStyle(
@@ -286,10 +286,15 @@ fun ChatScreen(
                     Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
                 }
             }
+            BannerAdComposable(
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 
+
 }
+
 @Composable
 fun AuraTypingIndicator() {
 
@@ -358,4 +363,6 @@ fun AuraTypingIndicator() {
             color = Color(0xFF22D3EE).copy(alpha = dot3)
         )
     }
+
+
 }

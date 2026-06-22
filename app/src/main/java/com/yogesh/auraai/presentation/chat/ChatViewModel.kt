@@ -109,13 +109,27 @@ User: $content
                 }
                 _events.emit(ChatUiEvent.ScrollToBottom)
             } catch (e: Exception) {
+                val errorMessage =
+                    if (
+                        e.message?.contains("503") == true ||
+                        e.message?.contains("unavailable", true) == true ||
+                        e.message?.contains("overloaded", true) == true
+                    ) {
+                        "⚠️ High traffic detected. Please wait a moment and try again."
+                    } else {
+                        e.message ?: "Failed to send message"
+                    }
+
                 _uiState.update {
                     it.copy(
                         inputText = content,
-                        error = e.message ?: "Failed to send message",
+                        error = errorMessage
                     )
                 }
-                _events.emit(ChatUiEvent.ShowSnackbar(e.message ?: "Failed to send message"))
+
+                _events.emit(
+                    ChatUiEvent.ShowSnackbar(errorMessage)
+                )
             } finally {
                 _uiState.update { it.copy(isSending = false) }
             }

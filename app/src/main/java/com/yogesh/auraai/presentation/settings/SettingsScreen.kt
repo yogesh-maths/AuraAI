@@ -105,79 +105,79 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
         ) {
-            TextField(
-                value = uiState.settings.apiKey,
-                onValueChange = viewModel::updateApiKey,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("API Key") },
-                visualTransformation = if (uiState.showApiKey) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                trailingIcon = {
-                    IconButton(onClick = viewModel::toggleShowApiKey) {
-                        Icon(
-                            imageVector = if (uiState.showApiKey) {
-                                Icons.Default.VisibilityOff
-                            } else {
-                                Icons.Default.Visibility
-                            },
-                            contentDescription = "Toggle API key visibility",
-                        )
-                    }
-                },
-                singleLine = true,
-            )
+//            TextField(
+//                value = uiState.settings.apiKey,
+//                onValueChange = viewModel::updateApiKey,
+//                modifier = Modifier.fillMaxWidth(),
+//                label = { Text("API Key") },
+//                visualTransformation = if (uiState.showApiKey) {
+//                    VisualTransformation.None
+//                } else {
+//                    PasswordVisualTransformation()
+//                },
+//                trailingIcon = {
+//                    IconButton(onClick = viewModel::toggleShowApiKey) {
+//                        Icon(
+//                            imageVector = if (uiState.showApiKey) {
+//                                Icons.Default.VisibilityOff
+//                            } else {
+//                                Icons.Default.Visibility
+//                            },
+//                            contentDescription = "Toggle API key visibility",
+//                        )
+//                    }
+//                },
+//                singleLine = true,
+//            )
 
-            TextField(
-                value = uiState.settings.modelName,
-                onValueChange = viewModel::updateModel,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                label = { Text("Model") },
-                singleLine = true,
-            )
+//            TextField(
+//                value = uiState.settings.modelName,
+//                onValueChange = viewModel::updateModel,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 12.dp),
+//                label = { Text("Model") },
+//                singleLine = true,
+//            )
+//
+//            TextField(
+//                value = uiState.settings.systemPrompt,
+//                onValueChange = viewModel::updateSystemPrompt,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 12.dp),
+//                label = { Text("System prompt") },
+//                minLines = 3,
+//            )
 
-            TextField(
-                value = uiState.settings.systemPrompt,
-                onValueChange = viewModel::updateSystemPrompt,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                label = { Text("System prompt") },
-                minLines = 3,
-            )
+//            uiState.connectionTestResult?.let { result ->
+//                Text(
+//                    text = result,
+//                    style = MaterialTheme.typography.bodySmall,
+//                    color = MaterialTheme.colorScheme.primary,
+//                    modifier = Modifier.padding(top = 8.dp),
+//                )
+//            }
 
-            uiState.connectionTestResult?.let { result ->
-                Text(
-                    text = result,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
+//            Button(
+//                onClick = viewModel::saveSettings,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 16.dp),
+//                enabled = !uiState.isSaving,
+//            ) {
+//                Text(if (uiState.isSaving) "Saving…" else "Save settings")
+//            }
 
-            Button(
-                onClick = viewModel::saveSettings,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                enabled = !uiState.isSaving,
-            ) {
-                Text(if (uiState.isSaving) "Saving…" else "Save settings")
-            }
-
-            OutlinedButton(
-                onClick = viewModel::testConnection,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                enabled = !uiState.isTestingConnection,
-            ) {
-                Text(if (uiState.isTestingConnection) "Testing…" else "Test connection")
-            }
+//            OutlinedButton(
+//                onClick = viewModel::testConnection,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 8.dp),
+//                enabled = !uiState.isTestingConnection,
+//            ) {
+//                Text(if (uiState.isTestingConnection) "Testing…" else "Test connection")
+//            }
 
             OutlinedButton(
                 onClick = { showClearDialog = true },

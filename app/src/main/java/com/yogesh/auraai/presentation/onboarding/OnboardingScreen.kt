@@ -111,14 +111,14 @@ fun OnboardingScreen(
                         Text("Continue")
                     }
 
-                    Button(
-                        onClick = {
-                            viewModel.verifyEmailAndContinue()
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("I Verified My Email")
-                    }
+//                    Button(
+//                        onClick = {
+//                            viewModel.verifyEmailAndContinue()
+//                        },
+//                        modifier = Modifier.fillMaxWidth()
+//                    ) {
+//                        Text("I Verified My Email")
+//                    }
                 }
                 3 -> {
 
