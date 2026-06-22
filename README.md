@@ -7,6 +7,5 @@ Conversation History,
 Friendly Error Handling,
 Release APK Included
 
-Note
-
+Note :
 AI responses are powered by Gemini. Temporary interruptions may occur due to high traffic or free-tier quota limits.
